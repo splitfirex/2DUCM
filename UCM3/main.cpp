@@ -28,6 +28,8 @@ int main(int argc, char *argv[]){
 	glutSpecialFunc(keySp);
 	glutMouseFunc(mouse);
 
+	initGL();
+
 	//timer(0);
 	glutMainLoop();
 
@@ -60,4 +62,23 @@ void keySp(int key, int mX, int mY){
 
 void mouse(int button, int state, int x, int y){
 	actual->mouse(button,state,x,y);
+}
+
+void initGL(){
+	glClearColor(1.0,1.0,1.0,1.0);
+	glColor3f(1.0,0.0,0.0); 
+
+	glPointSize(4.0);
+	glLineWidth(2.0);
+
+	// Viewport
+    glViewport(0, 0, actual->WIDTH, actual->HEIGHT);
+    
+	// Model transformation
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Scene Visible Area
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 }

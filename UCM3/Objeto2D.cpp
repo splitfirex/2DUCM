@@ -27,9 +27,14 @@ void Objeto2D:: rota(GLfloat alfa) {
 }
 
 bool Objeto2D::estaDentro(Vector3 *punto, MODO modo){
-	switch (switch_on)
+	switch (modo)
 	{
+	case BOXING:
+		
+		break;
+
 	default:
 		break;
 	}
+	return false;
 }

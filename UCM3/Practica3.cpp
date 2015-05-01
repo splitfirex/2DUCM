@@ -11,7 +11,8 @@ GLdouble escala = 1;
 
 Practica3::Practica3(void)
 {
-	HEIGHT =400; WIDTH =400;
+	HEIGHT =250; WIDTH =500;
+
 }
 
 

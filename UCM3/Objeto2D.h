@@ -16,6 +16,11 @@ class Objeto2D : public virtual ObjetoDibujable{
 		GLfloat* dameMatrizAfin();
 
 		bool estaDentro(Vector3* punto, MODO modo );
+   
+   protected:
+		int numVertices, numNormales;
+		Vector3** vertices;
+		Vector3** normales;
 };
 
 #endif

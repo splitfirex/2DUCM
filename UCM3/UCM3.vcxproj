@@ -15,6 +15,7 @@
     <ClCompile Include="Objeto2D.cpp" />
     <ClCompile Include="Objeto3D.cpp" />
     <ClCompile Include="ObjetoCompuesto.cpp" />
+    <ClCompile Include="ObjetoConvexo.cpp" />
     <ClCompile Include="Practica3.cpp" />
     <ClCompile Include="TAfin.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -24,6 +25,7 @@
     <ClInclude Include="Objeto2D.h" />
     <ClInclude Include="Objeto3D.h" />
     <ClInclude Include="ObjetoCompuesto.h" />
+    <ClInclude Include="ObjetoConvexo.h" />
     <ClInclude Include="ObjetoDibujable.h" />
     <ClInclude Include="Practica3.h" />
     <ClInclude Include="TAfin.h" />

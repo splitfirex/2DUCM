@@ -1,4 +1,5 @@
 #include "Practica3.h"
+#include "ObjetoConvexo.h"
 #include <iostream>
 // Scene visible area size
 GLdouble xLeft= 0.0, xRight= 500.0, yBot= 0.0, yTop= 250.0;
@@ -8,11 +9,14 @@ GLdouble xTriangle= 100.0, yTriangle= 100.0;
 GLdouble triangleWidth= 100.0, triangleHeight= 50.0;
 
 GLdouble escala = 1;
+ObjetoConvexo **od = new ObjetoConvexo*[10];
+int numObjetos = 0;
 
 Practica3::Practica3(void)
 {
 	HEIGHT =250; WIDTH =500;
-
+	od[numObjetos++] = new ObjetoConvexo(5,50);
+	od[numObjetos-1]->traslada(new Vector3(WIDTH/2, HEIGHT/2,0)); 
 }
 
 
@@ -23,12 +27,16 @@ Practica3::~Practica3(void)
 void Practica3::dibujar(){
   glClear( GL_COLOR_BUFFER_BIT );
 
+  for(int i =0 ; i< numObjetos ; i++){
+	  od[i]->dibuja();
+  }
+
   // Scene rendering
-  glBegin ( GL_TRIANGLES ) ;
+  /*glBegin ( GL_TRIANGLES ) ;
        glVertex2d( xTriangle, yTriangle );
        glVertex2d( xTriangle + triangleWidth, yTriangle );
        glVertex2d( xTriangle + triangleWidth, yTriangle + triangleHeight );
-  glEnd () ;
+  glEnd () ;*/
 }
 
 

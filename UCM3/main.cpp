@@ -17,8 +17,8 @@ Escena *actual;
 int main(int argc, char *argv[]){
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE );
-	actual = new Practica3();
-	glutInitWindowSize(actual->WIDTH,actual->HEIGHT);
+	
+	glutInitWindowSize(500,250);
 	glutInit(&argc,argv);
 	glutCreateWindow("Graficas Practica 3");
 
@@ -28,6 +28,7 @@ int main(int argc, char *argv[]){
 	glutSpecialFunc(keySp);
 	glutMouseFunc(mouse);
 
+	actual = new Practica3();
 	initGL();
 
 	//timer(0);

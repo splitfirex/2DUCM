@@ -7,7 +7,13 @@ Vector3::Vector3(GLdouble ax, GLdouble ay,  GLdouble az)
 	x =ax; y=ay;z=az;
 }
 
-Vector3::Vector3(){
+Vector3::Vector3(Vector3* v){
+	x = v->x;
+	y = v->y;
+	z = v->z;
+}
+
+Vector3::Vector3(void){
 }
 
 Vector3::~Vector3(void)
@@ -54,12 +60,10 @@ Vector3 operator+ (Vector3 v, Vector3 u)
 	res.z = v.z+u.z;
 	return res;
 }
-Vector3 operator- (Vector3 v, Vector3 u)
+Vector3* operator- (Vector3 v, Vector3 u)
 {
-	Vector3 res;
-	res.x = v.x-u.x;
-	res.y = v.y-u.y;
-	res.z = v.z-u.z;
+	Vector3 *res;
+	res = new Vector3( v.x-u.x, v.y-u.y,v.z-u.z);
 	return res;
 }
 
@@ -82,7 +86,7 @@ Vector3 operator&(Vector3 u, Vector3 v)
 
 	return resVector;
 }
-GLfloat operator|(Vector3 v, Vector3 u)	//dot product
+GLfloat operator|(Vector3 v, Vector3 u)
 {
 	return v.x*u.x+v.y*u.y+v.z*u.z;
 }

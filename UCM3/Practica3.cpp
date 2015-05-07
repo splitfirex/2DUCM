@@ -9,7 +9,7 @@ GLdouble xTriangle= 100.0, yTriangle= 100.0;
 GLdouble triangleWidth= 100.0, triangleHeight= 50.0;
 
 GLdouble escala = 1;
-ObjetoConvexo **od = new ObjetoConvexo*[10];
+Objeto2D **od = new Objeto2D*[10];
 int numObjetos = 0;
 
 Practica3::Practica3(void)
@@ -127,6 +127,12 @@ void Practica3::keyboardSP(int key, int mX, int mY){
 }
 
 void Practica3::mouse(int button, int state, int x, int y){
-		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN))
-		std::cout << x << '\t' << y << std::endl;
+		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
+		Vector3 *punto;
+			punto= new Vector3(x,y,0);
+			std::cout << x << '\t' << y << std::endl;
+			for(int i = 0 ; i < numObjetos ; i++){
+				std::cout << od[i]->estaDentro(punto);
+			}
+		}
 }

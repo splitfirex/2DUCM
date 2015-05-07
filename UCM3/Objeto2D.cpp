@@ -26,15 +26,15 @@ void Objeto2D:: rota(GLfloat alfa) {
 	matriz->rota(alfa,0, 0,1);
 }
 
-bool Objeto2D::estaDentro(Vector3 *punto, MODO modo){
-	switch (modo)
-	{
-	case BOXING:
-		
-		break;
-
-	default:
-		break;
+bool Objeto2D::estaDentro(Vector3 *punto){
+	
+	for(int i =0; i< numVertices ; i++){
+		Vector3 *vectorAlPunto;
+		Vector3 *puntoVector = new Vector3(0,0,0);
+		vectorAlPunto = punto-*vertices[i];
+		if( (*vectorAlPunto|*normales[i]) > 0 ){
+			return false;
+		}
 	}
-	return false;
+	return true;
 }

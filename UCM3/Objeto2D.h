@@ -15,7 +15,7 @@ class Objeto2D : public virtual ObjetoDibujable{
 		void rota(GLfloat alfa);
 		GLfloat* dameMatrizAfin();
 
-		bool estaDentro(Vector3* punto, MODO modo );
+		bool estaDentro(Vector3* punto);
    
    protected:
 		int numVertices, numNormales;

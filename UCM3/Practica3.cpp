@@ -1,22 +1,43 @@
 #include "Practica3.h"
+#include "TextureManagement.h"
 #include "ObjetoConvexo.h"
+#include "Textura.h"
 #include <iostream>
 // Scene visible area size
-GLdouble xLeft= 0.0, xRight= 500.0, yBot= 0.0, yTop= 250.0;
-
-// Scene variables
-GLdouble xTriangle= 100.0, yTriangle= 100.0;
-GLdouble triangleWidth= 100.0, triangleHeight= 50.0;
+GLdouble xLeft= 0.0, xRight= 800.0, yBot= 0.0, yTop= 600.0;
 
 GLdouble escala = 1;
-ObjetoConvexo **od = new ObjetoConvexo*[10];
-int numObjetos = 0;
+
+Objeto2D **od = new Objeto2D*[10];
+int numObjetos = 0; // numero de objetos en la escena
+
+GLuint textura;
+GLuint tWidth, tHeight;
+Vector2 **listaVectores;
+
+enum MODO{ design, select, animate };
+MODO modo;
 
 Practica3::Practica3(void)
 {
-	HEIGHT =250; WIDTH =500;
-	od[numObjetos++] = new ObjetoConvexo(5,50);
-	od[numObjetos-1]->traslada(new Vector3(WIDTH/2, HEIGHT/2,0)); 
+	// Cargo la textura en memoria
+	initTexture(textura,tWidth,tHeight,"textura/ray.bmp");
+	HEIGHT =tHeight; WIDTH =tWidth;
+	
+	glEnable(GL_TEXTURE_2D);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_NORMALIZE);
+
+	//Establezco el modo inicial
+	modo = design;
+
+	//Genero el objeto textura
+	Vector2 **vectores = new Vector2*[4];
+	vectores[0] = new Vector2(0,0); vectores[1] = new Vector2(WIDTH,0);
+	vectores[2] = new Vector2(WIDTH,HEIGHT); vectores[3] = new Vector2(0,HEIGHT);
+	od[numObjetos] = new Textura();
+	od[numObjetos]->setVertices(4,vectores);
+	numObjetos++;
 }
 
 
@@ -28,6 +49,9 @@ void Practica3::dibujar(){
   glClear( GL_COLOR_BUFFER_BIT );
 
   for(int i =0 ; i< numObjetos ; i++){
+	 glBindTexture(GL_TEXTURE_2D, textura);
+	 // glutSolidCube(100);
+
 	  od[i]->dibuja();
   }
 
@@ -41,6 +65,7 @@ void Practica3::dibujar(){
 
 
 void Practica3::reshape(int w, int h){
+
 	//GLdouble widthScale= WIDTH/(xRight-xLeft);
   //GLdouble heightScale= HEIGHT/(yTop-yBot);
   
@@ -79,11 +104,11 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
     break;
 
   case '+' :
-    xTriangle += 10.0;
+    //xTriangle += 10.0;
     break ;
 
   case '-' :
-    xTriangle -= 10.0;
+    //xTriangle -= 10.0;
     break ;
 
   default:

@@ -4,23 +4,21 @@
 
 #include "ObjetoDibujable.h"
 
-enum MODO{ BOXING, MODO2, MODO3 };
-
 class Objeto2D : public virtual ObjetoDibujable{
    public:	  	   
 	    Objeto2D();    
 		~Objeto2D();
-		void traslada(Vector3* punto);
+		void traslada(Vector2* punto);
 		void escala(GLfloat fX,GLfloat fY);
 		void rota(GLfloat alfa);
 		GLfloat* dameMatrizAfin();
-
-		bool estaDentro(Vector3* punto, MODO modo );
-   
+		void setVertices(int numVertices, Vector2**);
+		bool estaDentro(Vector2* punto);
+  
    protected:
 		int numVertices, numNormales;
-		Vector3** vertices;
-		Vector3** normales;
+		Vector2** vertices;
+		Vector2** normales;
 };
 
 #endif

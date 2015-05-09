@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Escenas">
       <UniqueIdentifier>{850cc000-cc22-4e1a-b08c-1962a76287e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Modelos">
+      <UniqueIdentifier>{b8cbf362-0cbe-4366-9e53-1dccc9ebfaf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,8 +45,23 @@
     <ClCompile Include="Objeto2D.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="ObjetoConvexo.cpp">
+    <ClCompile Include="Vector2.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoader.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManagement.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Textura.cpp">
+      <Filter>Source Files\Modelos</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjetoConvexo.cpp">
+      <Filter>Source Files\Modelos</Filter>
+    </ClCompile>
+    <ClCompile Include="Selector.cpp">
+      <Filter>Source Files\Modelos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,5 +92,23 @@
     <ClInclude Include="ObjetoConvexo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManagement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textura.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Selector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

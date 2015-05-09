@@ -7,7 +7,7 @@
 class Escena
 {
 public:
-	int WIDTH, HEIGHT;
+	unsigned int WIDTH, HEIGHT;
 
 	virtual void dibujar() = 0;
 	virtual void keyboard(unsigned char key, int mX, int mY) = 0;

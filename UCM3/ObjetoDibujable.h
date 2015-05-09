@@ -2,6 +2,7 @@
 #define ObjetoDibujable_H_
 
 #include "Vector3.h"
+#include "Vector2.h"
 #include "TAfin.h"
 
 class ObjetoDibujable{

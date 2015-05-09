@@ -14,7 +14,7 @@ GLfloat* Objeto2D:: dameMatrizAfin() {
 }
 
 //To do (usando las correspondientes operaciones de TAfin)
-void Objeto2D:: traslada(Vector3* punto) {
+void Objeto2D:: traslada(Vector2* punto) {
 	matriz->traslada(punto->x, punto->y,0);
 }
 
@@ -26,15 +26,13 @@ void Objeto2D:: rota(GLfloat alfa) {
 	matriz->rota(alfa,0, 0,1);
 }
 
-bool Objeto2D::estaDentro(Vector3 *punto, MODO modo){
-	switch (modo)
-	{
-	case BOXING:
-		
-		break;
+void Objeto2D:: setVertices(int nv, Vector2** ve) {
+	numVertices = nv;
+	vertices = ve;
+}
 
-	default:
-		break;
-	}
+
+bool Objeto2D::estaDentro(Vector2 *punto){
+
 	return false;
 }

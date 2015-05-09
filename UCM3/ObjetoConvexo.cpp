@@ -12,7 +12,7 @@ ObjetoConvexo::ObjetoConvexo(int n, double l)
 {
 	lados=n;
 	tamano = l;
-	vertices = new Vector3*[lados];
+	vertices = new Vector2*[lados];
 
 	//Inicializo los vertices y las normales
 	numVertices = n;
@@ -23,7 +23,7 @@ ObjetoConvexo::ObjetoConvexo(int n, double l)
 
 		double x= c*tamano + s*tamano;
 		double y= -s*tamano + c*tamano;
-		Vector3* p= new Vector3(x, y, 0);
+		Vector2* p= new Vector2(x, y);
 		vertices[i]= p;
 	}
 }

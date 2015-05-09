@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE );
 	
-	glutInitWindowSize(500,250);
+	glutInitWindowSize(800,600);
 	glutInit(&argc,argv);
 	glutCreateWindow("Graficas Practica 3");
 
@@ -44,7 +44,7 @@ void timer(int flag){
 
 void Display(){
 	actual->dibujar();
-	glFlush();
+	//glFlush();
 	glutSwapBuffers();
 }
 

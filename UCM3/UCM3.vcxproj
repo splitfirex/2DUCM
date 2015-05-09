@@ -17,7 +17,12 @@
     <ClCompile Include="ObjetoCompuesto.cpp" />
     <ClCompile Include="ObjetoConvexo.cpp" />
     <ClCompile Include="Practica3.cpp" />
+    <ClCompile Include="Selector.cpp" />
     <ClCompile Include="TAfin.cpp" />
+    <ClCompile Include="Textura.cpp" />
+    <ClCompile Include="TextureLoader.cpp" />
+    <ClCompile Include="TextureManagement.cpp" />
+    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -28,8 +33,16 @@
     <ClInclude Include="ObjetoConvexo.h" />
     <ClInclude Include="ObjetoDibujable.h" />
     <ClInclude Include="Practica3.h" />
+    <ClInclude Include="Selector.h" />
     <ClInclude Include="TAfin.h" />
+    <ClInclude Include="Textura.h" />
+    <ClInclude Include="TextureLoader.h" />
+    <ClInclude Include="TextureManagement.h" />
+    <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EB62E762-27CF-4B26-AA49-298BF55CADB1}</ProjectGuid>
@@ -66,6 +79,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)freeglut\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

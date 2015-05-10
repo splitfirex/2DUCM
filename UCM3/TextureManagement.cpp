@@ -27,9 +27,9 @@ void initTexture(GLuint & myTexture,
 	glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, textureWidth, textureHeight, border, GL_RGB, GL_UNSIGNED_BYTE, pixMap);
 
 	//Textures and ilumination
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 	delete[] pixMap;
 }

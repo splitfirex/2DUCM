@@ -2,6 +2,8 @@
 
 Objeto2D:: Objeto2D() { 	 
     matriz = new TAfin();
+	numVertices = 0;
+	numNormales = 0;
 }
 
  

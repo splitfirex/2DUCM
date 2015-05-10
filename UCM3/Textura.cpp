@@ -13,6 +13,7 @@ Textura::~Textura(void)
 
 void Textura::dibuja(){
 
+	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
 	glBegin(GL_TRIANGLE_FAN);
 

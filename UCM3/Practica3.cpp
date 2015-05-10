@@ -1,6 +1,7 @@
 #include "Practica3.h"
 #include "TextureManagement.h"
 #include "ObjetoConvexo.h"
+#include "Selector.h"
 #include "Textura.h"
 #include <iostream>
 // Scene visible area size
@@ -13,21 +14,25 @@ int numObjetos = 0; // numero de objetos en la escena
 
 GLuint textura;
 GLuint tWidth, tHeight;
-Vector2 **listaVectores;
+Selector *selec;
+Vector2 **listaVertices;
+int numVertices;
 
 enum MODO{ design, select, animate };
 MODO modo;
 
 Practica3::Practica3(void)
 {
-	// Cargo la textura en memoria
-	initTexture(textura,tWidth,tHeight,"textura/ray.bmp");
-	HEIGHT =tHeight; WIDTH =tWidth;
 	
+	listaVertices = new Vector2*[10];
+	//glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_NORMALIZE);
 
+	// Cargo la textura en memoria
+	initTexture(textura,tWidth,tHeight,"textura/ray.bmp");
+	HEIGHT =600; WIDTH =800;
 	//Establezco el modo inicial
 	modo = design;
 
@@ -38,6 +43,12 @@ Practica3::Practica3(void)
 	od[numObjetos] = new Textura();
 	od[numObjetos]->setVertices(4,vectores);
 	numObjetos++;
+
+	//Genero el objeto selector
+	od[numObjetos] = new Selector();
+	numObjetos++;
+	
+
 }
 
 
@@ -152,6 +163,11 @@ void Practica3::keyboardSP(int key, int mX, int mY){
 }
 
 void Practica3::mouse(int button, int state, int x, int y){
-		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN))
+		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
+			Vector2 *v2 = new Vector2(x,HEIGHT-y);
+			if(numVertices == 3) numVertices =0 ;
+			listaVertices[numVertices++] = v2;
+			od[1]->setVertices(numVertices,listaVertices);
+		}
 		std::cout << x << '\t' << y << std::endl;
 }

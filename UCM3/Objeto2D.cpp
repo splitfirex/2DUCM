@@ -32,9 +32,3 @@ void Objeto2D:: setVertices(int nv, Vector2** ve) {
 	numVertices = nv;
 	vertices = ve;
 }
-
-
-bool Objeto2D::estaDentro(Vector2 *punto){
-
-	return false;
-}

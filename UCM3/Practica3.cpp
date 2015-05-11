@@ -16,10 +16,8 @@ GLuint textura;
 GLuint tWidth, tHeight;
 Selector *selec;
 Vector2 **listaVertices;
+Selector *selector;
 int numVertices;
-
-enum MODO{ design, select, animate };
-MODO modo;
 
 Practica3::Practica3(void)
 {
@@ -34,7 +32,10 @@ Practica3::Practica3(void)
 	initTexture(textura,tWidth,tHeight,"textura/ray.bmp");
 	HEIGHT =600; WIDTH =800;
 	//Establezco el modo inicial
-	modo = design;
+	selector = new Selector();
+	selector->modo = design;
+	selector->WIDTH =WIDTH;
+	selector->HEIGHT = HEIGHT;
 
 	//Genero el objeto textura
 	Vector2 **vectores = new Vector2*[4];
@@ -42,10 +43,6 @@ Practica3::Practica3(void)
 	vectores[2] = new Vector2(WIDTH,HEIGHT); vectores[3] = new Vector2(0,HEIGHT);
 	od[numObjetos] = new Textura();
 	od[numObjetos]->setVertices(4,vectores);
-	numObjetos++;
-
-	//Genero el objeto selector
-	od[numObjetos] = new Selector();
 	numObjetos++;
 	
 
@@ -61,17 +58,11 @@ void Practica3::dibujar(){
 
   for(int i =0 ; i< numObjetos ; i++){
 	 glBindTexture(GL_TEXTURE_2D, textura);
-	 // glutSolidCube(100);
-
-	  od[i]->dibuja();
+	 if(selector->modo == design) {
+		od[i]->dibuja();
+	 }
   }
-
-  // Scene rendering
-  /*glBegin ( GL_TRIANGLES ) ;
-       glVertex2d( xTriangle, yTriangle );
-       glVertex2d( xTriangle + triangleWidth, yTriangle );
-       glVertex2d( xTriangle + triangleWidth, yTriangle + triangleHeight );
-  glEnd () ;*/
+  selector->dibuja();
 }
 
 
@@ -122,6 +113,13 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
     //xTriangle -= 10.0;
     break ;
 
+  case 'd' :
+	  selector->modo = design;
+    break ;
+  case 's' :
+	  selector->modo = select;
+    break ;
+
   default:
     need_redisplay = false;
     break;
@@ -163,11 +161,14 @@ void Practica3::keyboardSP(int key, int mX, int mY){
 }
 
 void Practica3::mouse(int button, int state, int x, int y){
+	if(selector->modo == design) {
 		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
 			Vector2 *v2 = new Vector2(x,HEIGHT-y);
 			if(numVertices == 3) numVertices =0 ;
 			listaVertices[numVertices++] = v2;
-			od[1]->setVertices(numVertices,listaVertices);
+			selector->setVertices(numVertices,listaVertices);
+			std::cout << x << '\t' << y << std::endl;
 		}
-		std::cout << x << '\t' << y << std::endl;
+	}
+		
 }

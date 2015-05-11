@@ -9,6 +9,15 @@ Vector2::Vector2(float x1, float y1){
   x=x1;
   y=y1;
 }
+
+Vector2* operator-(Vector2 v1, Vector2 v2){
+	return new Vector2(v2.x -v1.x, v2.y-v1.y);
+}
+
+Vector2* operator|(Vector2 v1, Vector2 v2){
+	return new Vector2((v2.x +v1.x)/2, (v2.y-v1.y)/2);
+}
+
 //---------------------------------------------------------------------------
 Vector2::~Vector2(){
 }

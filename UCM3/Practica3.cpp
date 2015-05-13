@@ -42,6 +42,7 @@ Practica3::Practica3(void)
 	selector->modo = design;
 	selector->WIDTH =WIDTH;
 	selector->HEIGHT = HEIGHT;
+	selector->calcularBaricentro();
 
 	//Genero el objeto textura
 	Vector2 **vectores = new Vector2*[4];
@@ -173,6 +174,7 @@ void Practica3::mouse(int button, int state, int x, int y){
 			if(numVertices == 3) numVertices =0 ;
 			listaVertices[numVertices++] = v2;
 			selector->setVertices(numVertices,listaVertices);
+			if(numVertices == 3) selector->calcularBaricentro() ;
 			std::cout << x << '\t' << y << std::endl;
 		}
 	}

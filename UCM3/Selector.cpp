@@ -18,17 +18,12 @@ bool Selector::estaDentro(Vector2 *punto){
 	//TODO
 }
 
-Vector2* Selector::getCentro(){
+void Selector::calcularBaricentro(){
 
-	if(numVertices !=3 ) return NULL;
-	Vector2 *pm1 = *vertices[0] | *vertices[1];
-	Vector2 *v1  = *vertices[2] - *pm1;
-	Vector2 *pm2 = *vertices[1] | *vertices[2];
-	Vector2 *v2 =  *vertices[0] - *pm2;
-
-
-
-	//TODO
+	Vector2 *a = vertices[0];
+	Vector2 *b = vertices[1];
+	Vector2 *c = vertices[2];
+	baricentro = new Vector2((a->x+b->x+c->x)/3,(a->y+b->y+c->y)/3);
 }
 
 
@@ -67,6 +62,11 @@ void Selector::dibuja(){
 	glPopMatrix();
 
 	}
+
+	glPointSize(5.0);
+	glBegin(GL_POINTS);
+		glVertex2f(baricentro->x, baricentro->y);
+	glEnd( );
 
 
 

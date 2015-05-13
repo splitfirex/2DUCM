@@ -12,10 +12,14 @@ public:
 	void dibuja();
 	void moverse();
 	bool estaDentro(Vector2* punto);
-	Vector2 * getCentro();
+	void calcularBaricentro();
+
+
 
 	Vector2 ** textura;
 	Vector2 * aceleracion;
+	Vector2 * baricentro;
+
 	MODO modo;
 	bool seleccionado;
 	int WIDTH, HEIGHT;

@@ -21,7 +21,8 @@ public:
    Vector2* rotaP(Vector2* centroRot, double ang);
    Vector2* rotaV(double ang);
    friend Vector2* operator- (Vector2 v2, Vector2 v1);
-   friend Vector2* operator|(Vector2 v1, Vector2 v2);
+   friend Vector2* operator+ (Vector2 v2, Vector2 v1);
+   friend Vector2* operator* (double exp, Vector2 v2);
 
 };
 

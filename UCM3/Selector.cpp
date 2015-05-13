@@ -5,6 +5,7 @@ Selector::Selector(void)
 {
 	numNormales =0;
 	numVertices =0;
+	seleccionado = false;
 }
 
 
@@ -51,7 +52,7 @@ void Selector::dibuja(){
 	glEnd();
 	glPopMatrix();
 
-	if(modo == select){
+	if(modo == select && seleccionado){
 	
 	glPushMatrix();
 		glColor3f(1.0,0.0,0.0);

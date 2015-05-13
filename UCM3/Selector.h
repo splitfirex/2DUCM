@@ -17,6 +17,7 @@ public:
 	Vector2 ** textura;
 	Vector2 * aceleracion;
 	MODO modo;
+	bool seleccionado;
 	int WIDTH, HEIGHT;
 };
 

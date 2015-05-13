@@ -33,6 +33,12 @@ Practica3::Practica3(void)
 	HEIGHT =600; WIDTH =800;
 	//Establezco el modo inicial
 	selector = new Selector();
+	// Se carga el triangulo inicial por defecto
+	listaVertices[numVertices++] = new Vector2(200,200);
+	listaVertices[numVertices++] = new Vector2(200,400);
+	listaVertices[numVertices++] = new Vector2(400,200);
+
+	selector->setVertices(numVertices,listaVertices);
 	selector->modo = design;
 	selector->WIDTH =WIDTH;
 	selector->HEIGHT = HEIGHT;

@@ -1,5 +1,13 @@
 #include "Selector.h"
+#include "stdlib.h"
+#include <time.h>
 
+
+double fRand(double fMin, double fMax)
+{
+	double f = (double)rand() / RAND_MAX;
+	return fMin + f * (fMax - fMin);
+}
 
 Selector::Selector(void)
 {
@@ -8,13 +16,78 @@ Selector::Selector(void)
 	seleccionado = false;
 }
 
+void Selector:: setVertices(int nv, Vector2** ve) {
+	Objeto2D::setVertices(nv,ve);
+	numVertices = nv;
+	if(numVertices == 3){
+		textura = new Vector2*[nv];
+		for(int i =0 ; i < nv; i++){
+			textura[i] = vertices[i]->clonar();
+		}
+
+		calcularBaricentro();
+		time_t seconds;	
+		time(&seconds);
+
+		srand((unsigned int) seconds);
+		double dd = rand() % 1;
+		aceleracion = new Vector2(fRand(-1,1),fRand(-1,1));
+		aceleracion->normalizar();
+	}
+}
+
+void Selector::impacta(double width, double height){
+	Vector2 *normal = new Vector2(0,0);
+	bool impacto = false;
+
+	if(baricentro->x <= 0 ){
+		normal = new Vector2(1,0);
+		impacto= true;
+	}
+
+	if(baricentro->x >= width ){
+		normal = new Vector2(-1,0);
+		impacto= true;
+	}
+
+	if(baricentro->y <= 0 ){
+		normal = new Vector2(0,1);
+		impacto= true;
+	}
+
+	if(baricentro->y >= height ){
+		normal = new Vector2(0,-1);
+		impacto= true;
+	}
+	if(impacto){
+		double a = aceleracion->dot(normal)/ normal->dot(normal);
+		normal->normalIzquierda->escalar(a);
+		aceleracion = *aceleracion-*normal;
+	}
+
+}
 
 Selector::~Selector(void)
 {
 }
 
+void Selector::step(){
+	impacta(WIDTH,HEIGHT);
+	baricentro = *baricentro+*aceleracion;
+	for (int i=0; i< numVertices; i++) {
+		vertices[i] = *vertices[i]+*aceleracion;
+	}
+}
+
 bool Selector::estaDentro(Vector2 *punto){
-	return false;
+	Vector2 *ca = *vertices[1] - *vertices[0];
+	Vector2 *cb = *vertices[2] - *vertices[0];
+	Vector2 *cp = *punto - *vertices[0];
+
+	double a = (cp->dot(cb->normalIzquierda()))/(ca->dot(cb->normalIzquierda())); 
+	double b = (cp->dot(ca->normalIzquierda()))/(cb->dot(ca->normalIzquierda())); 
+
+	return a >= 0 && b >= 0 && a + b <= 1 ;
 	//TODO
 }
 
@@ -32,24 +105,27 @@ void Selector::dibuja(){
 	glDisable(GL_TEXTURE_2D);
 	glColor3f(1.0,0.0,0.0);
 	glPushMatrix();
-		glMultMatrixf(matriz->dameMatrizModelado());
-		glLineWidth(2.0);
+	glMultMatrixf(matriz->dameMatrizModelado());
+	glLineWidth(2.0);
 	if(modo == design){
 		glBegin(GL_LINE_LOOP);
 	}else if(modo == select){
 		glEnable(GL_TEXTURE_2D);
 		glBegin(GL_TRIANGLES);
+	}else if(modo == animate){
+		glEnable(GL_TEXTURE_2D);
+		glBegin(GL_TRIANGLES);
 	}
 	for (int i=0; i< numVertices; i++) {
-		glTexCoord2f(vertices[i % numVertices]->x/WIDTH, vertices[i % numVertices]->y/HEIGHT);
+		glTexCoord2f(textura[i % numVertices]->x/WIDTH, textura[i % numVertices]->y/HEIGHT);
 		glVertex2d(vertices[i % numVertices]->x,vertices[i % numVertices]->y);
 	}
 	glEnd();
 	glPopMatrix();
 
-	if(modo == select && seleccionado){
-	
-	glPushMatrix();
+	if((modo == select || modo== animate) && seleccionado){
+
+		glPushMatrix();
 		glColor3f(1.0,0.0,0.0);
 		glDisable(GL_TEXTURE_2D);
 		glMultMatrixf(matriz->dameMatrizModelado());
@@ -59,13 +135,13 @@ void Selector::dibuja(){
 			glVertex2d(vertices[i % numVertices]->x,vertices[i % numVertices]->y);
 		}
 		glEnd();
-	glPopMatrix();
+		glPopMatrix();
 
 	}
 
 	glPointSize(5.0);
 	glBegin(GL_POINTS);
-		glVertex2f(baricentro->x, baricentro->y);
+	glVertex2f(baricentro->x, baricentro->y);
 	glEnd( );
 
 

@@ -14,9 +14,16 @@ Vector2* operator+(Vector2 v1, Vector2 v2){
 	return new Vector2(v2.x +v1.x, v2.y+v1.y);
 }
 
+Vector2* Vector2::normalIzquierda(){
+	Vector2 *result = new Vector2(-y,x);
+
+	//result->normalizar();
+	int ee = dot(result);
+	return result;
+}
 
 Vector2* operator-(Vector2 v1, Vector2 v2){
-	return new Vector2(v2.x -v1.x, v2.y-v1.y);
+	return new Vector2(v1.x -v2.x, v1.y-v2.y);
 }
 
 

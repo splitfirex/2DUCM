@@ -37,11 +37,6 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-void timer(int flag){
-	glutPostRedisplay();
-	glutTimerFunc(1000/60,timer,0);
-}
-
 void Display(){
 	actual->dibujar();
 	//glFlush();

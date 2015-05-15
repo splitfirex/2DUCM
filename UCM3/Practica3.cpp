@@ -17,12 +17,15 @@ GLuint tWidth, tHeight;
 Selector *selec;
 Vector2 **listaVertices;
 Selector *selector;
+bool running;
+
 int numVertices;
 
 Practica3::Practica3(void)
 {
 	
 	listaVertices = new Vector2*[10];
+	running = false;
 	//glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_SMOOTH);
@@ -51,8 +54,6 @@ Practica3::Practica3(void)
 	od[numObjetos] = new Textura();
 	od[numObjetos]->setVertices(4,vectores);
 	numObjetos++;
-	
-
 }
 
 
@@ -102,6 +103,15 @@ void Practica3::reshape(int w, int h){
 
 }
 
+
+void timer(int flag){
+	if(selector->modo == animate && running){
+	glutPostRedisplay();
+	selector->step();
+	glutTimerFunc(1000/60,timer,0);
+	}
+}
+
 void Practica3::keyboard(unsigned char key, int mX, int mY){
 	
   bool need_redisplay = true;
@@ -126,6 +136,17 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
   case 's' :
 	  selector->modo = select;
     break ;
+  case 'a' :
+	  selector->modo = animate;
+    break ;
+   case 'p' :
+	  selector->step();
+    break ;
+   case 'q':
+	   running = running ? false : true;
+	   timer(1);
+	break;
+
 
   default:
     need_redisplay = false;
@@ -135,6 +156,8 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
   if (need_redisplay)
     glutPostRedisplay();
 }
+
+
 
 void Practica3::keyboardSP(int key, int mX, int mY){
 	bool need_redisplay = true;
@@ -176,6 +199,11 @@ void Practica3::mouse(int button, int state, int x, int y){
 			selector->setVertices(numVertices,listaVertices);
 			if(numVertices == 3) selector->calcularBaricentro() ;
 			std::cout << x << '\t' << y << std::endl;
+		}
+	}else if(selector->modo == select){
+		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
+			Vector2 *v2 = new Vector2(x,HEIGHT-y);
+			selector->seleccionado = selector->estaDentro(v2);
 		}
 	}
 		

@@ -61,7 +61,7 @@ void Selector::impacta(double width, double height){
 	}
 	if(impacto){
 		double a = aceleracion->dot(normal)/ normal->dot(normal);
-		normal->normalIzquierda->escalar(a);
+		normal->escalar(2*a);
 		aceleracion = *aceleracion-*normal;
 	}
 
@@ -139,10 +139,10 @@ void Selector::dibuja(){
 
 	}
 
-	glPointSize(5.0);
-	glBegin(GL_POINTS);
-	glVertex2f(baricentro->x, baricentro->y);
-	glEnd( );
+	//glPointSize(5.0);
+	//glBegin(GL_POINTS);
+	//glVertex2f(baricentro->x, baricentro->y);
+	//glEnd( );
 
 
 

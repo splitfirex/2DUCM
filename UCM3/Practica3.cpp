@@ -138,6 +138,8 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
     break ;
   case 'a' :
 	  selector->modo = animate;
+	  running = true;
+	  timer(1);
     break ;
    case 'p' :
 	  selector->step();

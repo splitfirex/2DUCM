@@ -16,6 +16,7 @@ GLuint textura;
 GLuint tWidth, tHeight;
 Selector *selec;
 Vector2 **listaVertices;
+Vector2 **listaVerticesAntiguio;
 Selector *selector;
 bool running;
 
@@ -25,6 +26,7 @@ Practica3::Practica3(void)
 {
 	
 	listaVertices = new Vector2*[10];
+	listaVerticesAntiguio = new Vector2*[10];
 	running = false;
 	//glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -37,9 +39,13 @@ Practica3::Practica3(void)
 	//Establezco el modo inicial
 	selector = new Selector();
 	// Se carga el triangulo inicial por defecto
-	listaVertices[numVertices++] = new Vector2(200,200);
-	listaVertices[numVertices++] = new Vector2(200,400);
-	listaVertices[numVertices++] = new Vector2(400,200);
+	listaVertices[numVertices] = new Vector2(200,200);
+	listaVerticesAntiguio[numVertices++] = new Vector2(200,200);
+	listaVertices[numVertices] = new Vector2(200,400);
+	listaVerticesAntiguio[numVertices++] = new Vector2(200,400);
+	listaVertices[numVertices] = new Vector2(400,200);
+	listaVerticesAntiguio[numVertices++] = new Vector2(400,200);
+
 
 	selector->setVertices(numVertices,listaVertices);
 	selector->modo = design;
@@ -132,14 +138,32 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 
   case 'd' :
 	  selector->modo = design;
+	  running = false;
     break ;
   case 's' :
 	  selector->modo = select;
+	  if(numVertices <3){
+			listaVertices[0] = listaVerticesAntiguio[0]->clonar();
+			listaVertices[1] = listaVerticesAntiguio[1]->clonar();
+			listaVertices[2] = listaVerticesAntiguio[2]->clonar();
+			selector->setVertices(3,listaVertices);
+			numVertices =3;
+	  }
+	  running = false;
     break ;
   case 'a' :
 	  selector->modo = animate;
-	  running = true;
-	  timer(1);
+	  if(numVertices <3){
+			listaVertices[0] = listaVerticesAntiguio[0]->clonar();
+			listaVertices[1] = listaVerticesAntiguio[1]->clonar();
+			listaVertices[2] = listaVerticesAntiguio[2]->clonar();
+			selector->setVertices(3,listaVertices);
+			numVertices =3;
+	  }
+	  if(!running){
+	    running = true;
+	    timer(1);
+	  }
     break ;
    case 'p' :
 	  selector->step();
@@ -199,7 +223,13 @@ void Practica3::mouse(int button, int state, int x, int y){
 			if(numVertices == 3) numVertices =0 ;
 			listaVertices[numVertices++] = v2;
 			selector->setVertices(numVertices,listaVertices);
-			if(numVertices == 3) selector->calcularBaricentro() ;
+			if(numVertices == 3){
+				selector->calcularBaricentro() ;
+				listaVerticesAntiguio[0] = listaVertices[0]->clonar();
+				listaVerticesAntiguio[1] = listaVertices[1]->clonar();
+				listaVerticesAntiguio[2] = listaVertices[2]->clonar();
+			}
+
 			std::cout << x << '\t' << y << std::endl;
 		}
 	}else if(selector->modo == select){

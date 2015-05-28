@@ -4,6 +4,7 @@
 #include "Selector.h"
 #include "Textura.h"
 #include <iostream>
+#include <vector>
 // Scene visible area size
 GLdouble xLeft= 0.0, xRight= 800.0, yBot= 0.0, yTop= 600.0;
 
@@ -17,14 +18,17 @@ GLuint tWidth, tHeight;
 Selector *selec;
 Vector2 **listaVertices;
 Vector2 **listaVerticesAntiguio;
-Selector *selector;
+std::vector<Selector> selectores;   
+Selector *selectorConstruccion;
+MODO modoActual;
 bool running;
 
 int numVertices;
 
 Practica3::Practica3(void)
 {
-	
+	modoActual = design;
+
 	listaVertices = new Vector2*[10];
 	listaVerticesAntiguio = new Vector2*[10];
 	running = false;
@@ -37,7 +41,8 @@ Practica3::Practica3(void)
 	initTexture(textura,tWidth,tHeight,"textura/ray.bmp");
 	HEIGHT =600; WIDTH =800;
 	//Establezco el modo inicial
-	selector = new Selector();
+	
+	selectorConstruccion = new Selector();
 	// Se carga el triangulo inicial por defecto
 	listaVertices[numVertices] = new Vector2(200,200);
 	listaVerticesAntiguio[numVertices++] = new Vector2(200,200);
@@ -47,11 +52,13 @@ Practica3::Practica3(void)
 	listaVerticesAntiguio[numVertices++] = new Vector2(400,200);
 
 
-	selector->setVertices(numVertices,listaVertices);
-	selector->modo = design;
-	selector->WIDTH =WIDTH;
-	selector->HEIGHT = HEIGHT;
-	selector->calcularBaricentro();
+	//selectorConstruccion->setVertices(numVertices,listaVertices);
+	selectorConstruccion->modo = design;
+	//selectorConstruccion->WIDTH =WIDTH;
+	//selectorConstruccion->HEIGHT = HEIGHT;
+	//selectorConstruccion->calcularBaricentro();
+	
+	selectores.insert(selectores.begin(), *selectorConstruccion);
 
 	//Genero el objeto textura
 	Vector2 **vectores = new Vector2*[4];
@@ -72,11 +79,14 @@ void Practica3::dibujar(){
 
   for(int i =0 ; i< numObjetos ; i++){
 	 glBindTexture(GL_TEXTURE_2D, textura);
-	 if(selector->modo == design) {
+	 if(modoActual == design) {
 		od[i]->dibuja();
 	 }
   }
-  selector->dibuja();
+
+  for (auto &selec : selectores) // access by reference to avoid copying
+    {  selec.dibuja();   }
+
 }
 
 
@@ -111,9 +121,10 @@ void Practica3::reshape(int w, int h){
 
 
 void timer(int flag){
-	if(selector->modo == animate && running){
+	if(modoActual == animate && running){
 	glutPostRedisplay();
-	selector->step();
+	for (auto &selec : selectores) // access by reference to avoid copying
+    {  selec.step();   }
 	glutTimerFunc(1000/60,timer,0);
 	}
 }
@@ -137,36 +148,37 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
     break ;
 
   case 'd' :
-	  selector->modo = design;
+	  modoActual = design;
 	  running = false;
     break ;
   case 's' :
-	  selector->modo = select;
-	  if(numVertices <3){
+	  modoActual = select;
+	  /*if(numVertices <3){
 			listaVertices[0] = listaVerticesAntiguio[0]->clonar();
 			listaVertices[1] = listaVerticesAntiguio[1]->clonar();
 			listaVertices[2] = listaVerticesAntiguio[2]->clonar();
 			selector->setVertices(3,listaVertices);
 			numVertices =3;
-	  }
+	  }*/
 	  running = false;
     break ;
   case 'a' :
-	  selector->modo = animate;
-	  if(numVertices <3){
+	  modoActual = animate;
+	 /* if(numVertices <3){
 			listaVertices[0] = listaVerticesAntiguio[0]->clonar();
 			listaVertices[1] = listaVerticesAntiguio[1]->clonar();
 			listaVertices[2] = listaVerticesAntiguio[2]->clonar();
 			selector->setVertices(3,listaVertices);
 			numVertices =3;
-	  }
+	  }*/
 	  if(!running){
 	    running = true;
 	    timer(1);
 	  }
     break ;
    case 'p' :
-	  selector->step();
+	   for (auto &selec : selectores) // access by reference to avoid copying
+    {  selec.step();   }
     break ;
    case 'q':
 	   running = running ? false : true;
@@ -217,25 +229,31 @@ void Practica3::keyboardSP(int key, int mX, int mY){
 }
 
 void Practica3::mouse(int button, int state, int x, int y){
-	if(selector->modo == design) {
+	if(modoActual == design) {
 		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
 			Vector2 *v2 = new Vector2(x,HEIGHT-y);
 			if(numVertices == 3) numVertices =0 ;
 			listaVertices[numVertices++] = v2;
-			selector->setVertices(numVertices,listaVertices);
+			selectorConstruccion->setVertices(numVertices,listaVertices);
 			if(numVertices == 3){
-				selector->calcularBaricentro() ;
+				selectorConstruccion->calcularBaricentro() ;
+				selectores.insert(selectores.begin(),*selectorConstruccion);
+				selectorConstruccion = new Selector();
+				/*
 				listaVerticesAntiguio[0] = listaVertices[0]->clonar();
 				listaVerticesAntiguio[1] = listaVertices[1]->clonar();
 				listaVerticesAntiguio[2] = listaVertices[2]->clonar();
+				*/
 			}
 
 			std::cout << x << '\t' << y << std::endl;
 		}
-	}else if(selector->modo == select){
+	}else if(modoActual == select){
 		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
 			Vector2 *v2 = new Vector2(x,HEIGHT-y);
-			selector->seleccionado = selector->estaDentro(v2);
+			// Seleccionar sin mo
+			for (auto &selec : selectores) 
+			{  selec.estaDentro(v2);   }
 		}
 	}
 		

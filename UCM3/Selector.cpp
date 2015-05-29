@@ -11,6 +11,7 @@ double fRand(double fMin, double fMax)
 
 Selector::Selector(void)
 {
+	modo = design;
 	numNormales =0;
 	numVertices =0;
 	seleccionado = false;
@@ -59,6 +60,37 @@ void Selector::impacta(double width, double height){
 		normal = new Vector2(0,-1);
 		impacto= true;
 	}
+
+	// Valido por la joda el impacto en los vertices
+	//if(!impacto){
+	//	for(int i =0 ; i< numVertices ; i++){
+	//		Vector2 *vertice = vertices[i];
+
+	//		if(vertice->x <= 0 ){
+	//			normal = new Vector2(1,0);
+	//			impacto= true;
+	//		}
+
+	//		if(vertice->x >= width ){
+	//			normal = new Vector2(-1,0);
+	//			impacto= true;
+	//		}
+
+	//		if(vertice->y <= 0 ){
+	//			normal = new Vector2(0,1);
+	//			impacto= true;
+	//		}
+
+	//		if(vertice->y >= height ){
+	//			normal = new Vector2(0,-1);
+	//			impacto= true;
+	//		}
+
+	//	}
+
+	//}
+
+
 	if(impacto){
 		double a = aceleracion->dot(normal)/ normal->dot(normal);
 		normal->escalar(2*a);
@@ -72,22 +104,27 @@ Selector::~Selector(void)
 }
 
 void Selector::step(){
-	impacta(WIDTH,HEIGHT);
-	baricentro = *baricentro+*aceleracion;
-	for (int i=0; i< numVertices; i++) {
-		vertices[i] = *vertices[i]+*aceleracion;
+	if(vertices){
+		impacta(WIDTH,HEIGHT);
+		baricentro = *baricentro+*aceleracion;
+		for (int i=0; i< numVertices; i++) {
+			vertices[i] = *vertices[i]+*aceleracion;
+		}
 	}
 }
 
 bool Selector::estaDentro(Vector2 *punto){
-	Vector2 *ca = *vertices[1] - *vertices[0];
-	Vector2 *cb = *vertices[2] - *vertices[0];
-	Vector2 *cp = *punto - *vertices[0];
+	if(vertices){
+		Vector2 *ca = *vertices[1] - *vertices[0];
+		Vector2 *cb = *vertices[2] - *vertices[0];
+		Vector2 *cp = *punto - *vertices[0];
 
-	double a = (cp->dot(cb->normalIzquierda()))/(ca->dot(cb->normalIzquierda())); 
-	double b = (cp->dot(ca->normalIzquierda()))/(cb->dot(ca->normalIzquierda())); 
+		double a = (cp->dot(cb->normalIzquierda()))/(ca->dot(cb->normalIzquierda())); 
+		double b = (cp->dot(ca->normalIzquierda()))/(cb->dot(ca->normalIzquierda())); 
 
-	return a >= 0 && b >= 0 && a + b <= 1 ;
+		return a >= 0 && b >= 0 && a + b <= 1 ;
+	}
+	return false;
 	//TODO
 }
 
@@ -117,7 +154,9 @@ void Selector::dibuja(){
 		glBegin(GL_TRIANGLES);
 	}
 	for (int i=0; i< numVertices; i++) {
-		glTexCoord2f(textura[i % numVertices]->x/WIDTH, textura[i % numVertices]->y/HEIGHT);
+		if(textura){
+			glTexCoord2f(textura[i % numVertices]->x/WIDTH, textura[i % numVertices]->y/HEIGHT);
+		}
 		glVertex2d(vertices[i % numVertices]->x,vertices[i % numVertices]->y);
 	}
 	glEnd();

@@ -30,5 +30,8 @@ void Objeto2D:: rota(GLfloat alfa) {
 
 void Objeto2D:: setVertices(int nv, Vector2** ve) {
 	numVertices = nv;
-	vertices = ve;
+	vertices = new Vector2*[nv];
+	for(int i=0; i< nv; i++){
+		vertices[i] = ve[i]->clonar();
+	}
 }

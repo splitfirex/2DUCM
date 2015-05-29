@@ -21,7 +21,6 @@ public:
 	void setVertices(int nv, Vector2** ve);
 
 	void impacta(double width, double height);
-
 	void step();
 	MODO modo;
 	bool seleccionado;

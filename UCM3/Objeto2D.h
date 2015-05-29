@@ -13,11 +13,8 @@ class Objeto2D : public virtual ObjetoDibujable{
 		void rota(GLfloat alfa);
 		GLfloat* dameMatrizAfin();
 		void setVertices(int numVertices, Vector2**);
-  
-   protected:
 		int numVertices, numNormales;
 		Vector2** vertices;
-		Vector2** normales;
 };
 
 #endif

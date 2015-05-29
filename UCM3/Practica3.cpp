@@ -3,6 +3,7 @@
 #include "ObjetoConvexo.h"
 #include "Selector.h"
 #include "Textura.h"
+#include "QuadTree.h"
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -16,16 +17,14 @@ int numObjetos = 0; // numero de objetos en la escena
 
 GLuint textura;
 GLuint tWidth, tHeight;
-Selector *selec;
 Vector2 **listaVertices;
 Vector2  *puntoClick;
-//Vector2 **listaVerticesAntiguio;
 std::vector<Selector*> selectores;  
-Selector *selectorConstruccion;
+
 MODO modoActual;
 bool running;
-
 int numVertices;
+QuadTree* arbol;
 
 Practica3::Practica3(void)
 {
@@ -169,6 +168,7 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		running = false;
 		break ;
 	case 's' :
+		arbol = new QuadTree(0,0,WIDTH,HEIGHT);
 		modoActual = select;
 		setModoSelectores();
 		if(numVertices <3){
@@ -178,6 +178,13 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 			selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 			numVertices =3;
 		}
+		// Guardamos la lista en el arbol.
+		for(std::vector<Selector*>::iterator it = selectores.begin(); it != selectores.end(); ++it) {
+			if((*it)->vertices){
+				arbol->inserta((*it));
+			}
+		}
+
 		running = false;
 		break ;
 	case 'a' :

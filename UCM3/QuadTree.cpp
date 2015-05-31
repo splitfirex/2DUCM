@@ -25,7 +25,7 @@ void QuadTree::inserta(Selector* p){
 	raiz = raiz->inserta(p);
 }
 
-Selector** QuadTree::buscar(Vector2* p){
+std::vector<Selector*> QuadTree::buscar(Vector2* p){
 	return raiz->buscar(p);
 }
 
@@ -34,8 +34,6 @@ Selector** QuadTree::buscar(Vector2* p){
 QuadLeaf::QuadLeaf(int mix, int miy, int max, int may) : QuadNodo(mix, miy,max, may){
 	limite = 1;
 	cantidad =0;
-	Objetos = new Selector*[limite];
-
 }
 
 void QuadLeaf::dibuja(){
@@ -66,28 +64,21 @@ QuadNodo* QuadLeaf::inserta(Selector* p){
 		}
 		return rama->inserta(p);
 	}else{
-		Objetos[cantidad++] = p;
+		Objetos.push_back(p);
+		cantidad++;
 		return this;
 	}
 
 }
 
-Selector** QuadLeaf::buscar(Vector2* p){
-	Selector** resultadoTemp = new Selector*[cantidad];
-
+std::vector<Selector*> QuadLeaf::buscar(Vector2* p){
+	std::vector<Selector*> resultado;
 	int n =0;
 	for(int i =0; i< cantidad; i++){
 		if(Objetos[i]->estaDentro(p)){
-			resultadoTemp[n] = Objetos[i];
-			n++;
+			resultado.push_back(Objetos[i]);
 		}
 	}
-	Selector** resultado = new Selector*[n];
-	// se recorta el array de salida
-	for(int i =0; i< n; i++){
-		resultado[i] = resultadoTemp[i];
-	}
-
 	return resultado;
 }
 
@@ -115,14 +106,17 @@ QuadNodo* QuadBranch::inserta(Selector* p){
 	return this;
 }
 
-Selector** QuadBranch::buscar(Vector2* p){
-	Selector** resultados = new Selector*[4];
+std::vector<Selector*> QuadBranch::buscar(Vector2* p){
+	std::vector<Selector*> resultados;
 	int n = 0;
 
 	for(int i = 0; i < 4 ; i++){
-		
+		if(nodos[i]->contiene(p)){
+			std::vector<Selector*> vectorContenido = nodos[i]->buscar(p);
+			resultados.insert(resultados.end(), vectorContenido.begin(), vectorContenido.end());
+		}
 	}
-	return resultados ;
+	return resultados;
 }
 
 void QuadBranch::dibuja(){

@@ -60,7 +60,7 @@ Practica3::Practica3(void)
 	//selectorConstruccion->modo = design;
 	//selectorConstruccion->WIDTH =WIDTH;
 	//selectorConstruccion->HEIGHT = HEIGHT;
-	generarSelectoresAleatorios(4, 4, 10000);
+	generarSelectoresAleatorios(4, 4, 200);
 	muestraArbol =true;
 	//selectorConstruccion->calcularBaricentro();
 
@@ -290,8 +290,15 @@ void Practica3::mouse(int button, int state, int x, int y){
 					}
 				}
 			}else{
-				arbol->buscar(puntoClick);
+				for (auto &selec : selectores) 
+				{
+					selec->seleccionado = false;
+				}
 
+				std::vector<Selector*> valores = arbol->buscar(puntoClick);
+				for(std::vector<Selector*>::iterator it = valores.begin(); it != valores.end(); ++it) {
+					(*it)->seleccionado = true;
+				}
 			}
 		}
 	}
@@ -308,6 +315,7 @@ void Practica3::generarSelectoresAleatorios(int col, int fil, int cant){
 			int w = i*wPorCol;
 			int h = j*hPorFil;
 			for(int k = 0; k < cant ; k++){
+
 				selectores.push_back(temp->generarEnRango(w,h,w+wPorCol,h+hPorFil,WIDTH,HEIGHT));
 			}
 		}

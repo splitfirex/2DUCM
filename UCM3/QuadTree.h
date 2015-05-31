@@ -22,7 +22,7 @@ public:
 	~QuadNodo(void){};
 	
 	virtual QuadNodo* inserta(Selector* p) =0;
-	virtual Selector** buscar(Vector2* v) =0;
+	virtual std::vector<Selector*> buscar(Vector2* v) =0;
 	virtual void dibuja() =0;
 	bool contiene(Vector2* v);
 
@@ -37,7 +37,7 @@ public:
 	
 	QuadBranch(int miX,int miY, int maX,int maY);
 	QuadNodo* inserta(Selector* p);
-	Selector** buscar(Vector2* v);
+	std::vector<Selector*> buscar(Vector2* v);
 	void dibuja();
 
 	~QuadBranch(void);
@@ -49,7 +49,7 @@ public:
 
 	QuadLeaf(int miX,int miY, int maX,int maY);
 	QuadNodo* inserta(Selector* p);
-	Selector** buscar(Vector2* v);
+	std::vector<Selector*> buscar(Vector2* v);
 	void dibuja();
 
 	QuadLeaf(void);
@@ -57,7 +57,7 @@ public:
 
 	int limite;
 	int cantidad;
-	Selector **Objetos;
+	std::vector<Selector*> Objetos;
 };
 
 class QuadTree
@@ -65,7 +65,7 @@ class QuadTree
 public:
 	QuadTree(int minX,int minY, int maxX,int maxY);
 	void inserta(Selector* p);
-	Selector** buscar(Vector2* v);
+	std::vector<Selector*> buscar(Vector2* v);
 	~QuadTree(void);
 	void dibuja();
 

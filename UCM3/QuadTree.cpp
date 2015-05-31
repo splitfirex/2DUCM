@@ -3,8 +3,8 @@
 // NODO
 
 bool QuadNodo::contiene(Vector2* v){ 
-	if(rec->x < v->getX() && rec->w >= v->getX()
-		&& rec->y < v->getY() && rec->h >= v->getY()){
+	if(rec->x <= v->getX() && rec->w >= v->getX()
+		&& rec->y <= v->getY() && rec->h >= v->getY()){
 		return true;
 	}
 	return false;
@@ -32,7 +32,7 @@ Selector** QuadTree::buscar(Vector2* p){
 // Metodos del nodo hoja
 
 QuadLeaf::QuadLeaf(int mix, int miy, int max, int may) : QuadNodo(mix, miy,max, may){
-	limite = 2;
+	limite = 1;
 	cantidad =0;
 	Objetos = new Selector*[limite];
 
@@ -46,7 +46,7 @@ void QuadLeaf::dibuja(){
 
 		glColor3f(r,g,b);
 		glDisable(GL_TEXTURE_2D);
-		glLineWidth(2.0);
+		glLineWidth(1.0);
 		glBegin(GL_LINE_LOOP);
 		
 		glVertex2d(rec->x,rec->y);
@@ -96,10 +96,10 @@ Selector** QuadLeaf::buscar(Vector2* p){
 QuadBranch::QuadBranch(int mix, int miy, int max, int may) : QuadNodo(mix, miy, max, may){
 	int wT = (max - mix);
 	int hT = (may - miy);
-	nodos[NW] = new QuadLeaf(mix, miy + hT/2, wT/2, may);
-	nodos[NE] = new QuadLeaf(mix + wT/2, miy + hT/2,max, may);
-	nodos[SE] = new QuadLeaf(mix + wT/2, miy, max, miy + hT/2);
-	nodos[SW] = new QuadLeaf(mix, miy ,mix+ wT/2, miy +hT/2);
+	nodos[NW] = new QuadLeaf(mix, (miy + hT/2)+1, mix + wT/2, may);
+	nodos[NE] = new QuadLeaf((mix + wT/2)+1, miy + hT/2,max, may);
+	nodos[SE] = new QuadLeaf(mix + wT/2, miy, max, (miy + hT/2) -1);
+	nodos[SW] = new QuadLeaf(mix, miy ,(mix+ wT/2)-1, miy +hT/2);
 }
 
 QuadNodo* QuadBranch::inserta(Selector* p){
@@ -108,6 +108,7 @@ QuadNodo* QuadBranch::inserta(Selector* p){
 			if(nodos[i]->contiene(p->vertices[h])){
 				QuadNodo* n = nodos[i]->inserta(p);
 				nodos[i] = n;
+				break;
 			} 
 		}
 	}

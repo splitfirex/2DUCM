@@ -25,6 +25,7 @@ MODO modoActual;
 bool running;
 int numVertices;
 QuadTree* arbol;
+int cuentaSelectores;
 
 Practica3::Practica3(void)
 {
@@ -60,9 +61,9 @@ Practica3::Practica3(void)
 
 	//selectorConstruccion->calcularBaricentro();
 
-	selectores.push_back(new Selector());
-	selectores[selectores.size()-1]->WIDTH =WIDTH;
-	selectores[selectores.size()-1]->HEIGHT =HEIGHT;
+	selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
+	//selectores[selectores.size()-1]->WIDTH =WIDTH;
+	//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 
 	//Genero el objeto textura
 	Vector2 **vectores = new Vector2*[4];
@@ -91,7 +92,9 @@ void Practica3::dibujar(){
 	for (auto &selec : selectores){
 		selec->dibuja();   
 	}
-
+	if(arbol){
+		arbol->dibuja();
+	}
 }
 
 
@@ -173,9 +176,9 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		setModoSelectores();
 		if(numVertices <3){
 			selectores.erase(selectores.begin()+selectores.size()-1);
-			selectores.push_back(new Selector());
-			selectores[selectores.size()-1]->WIDTH =WIDTH;
-			selectores[selectores.size()-1]->HEIGHT =HEIGHT;
+			selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
+			//selectores[selectores.size()-1]->WIDTH =WIDTH;
+			//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 			numVertices =3;
 		}
 		// Guardamos la lista en el arbol.
@@ -192,9 +195,9 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		setModoSelectores();
 		if(numVertices <3){
 			selectores.erase(selectores.begin()+selectores.size()-1);
-			selectores.push_back(new Selector());
-			selectores[selectores.size()-1]->WIDTH =WIDTH;
-			selectores[selectores.size()-1]->HEIGHT =HEIGHT;
+			selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
+			//selectores[selectores.size()-1]->WIDTH =WIDTH;
+			//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 			numVertices =3;
 		}
 		if(!running){
@@ -262,15 +265,7 @@ void Practica3::mouse(int button, int state, int x, int y){
 			listaVertices[numVertices++] = v2;
 			selectores[selectores.size()-1]->setVertices(numVertices,listaVertices);
 			if(numVertices == 3){
-				selectores[selectores.size()-1]->calcularBaricentro() ;
-				selectores.push_back(new Selector());
-				selectores[selectores.size()-1]->WIDTH =WIDTH;
-				selectores[selectores.size()-1]->HEIGHT =HEIGHT;
-				/*
-				listaVerticesAntiguio[0] = listaVertices[0]->clonar();
-				listaVerticesAntiguio[1] = listaVertices[1]->clonar();
-				listaVerticesAntiguio[2] = listaVertices[2]->clonar();
-				*/
+				selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
 			}
 
 			std::cout << x << '\t' << y << std::endl;

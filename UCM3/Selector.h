@@ -8,6 +8,7 @@ class Selector : public Objeto2D
 {
 public:
 	Selector(void);
+	Selector(int id, int width, double height);
 	~Selector(void);
 	void dibuja();
 	void moverse();
@@ -23,6 +24,8 @@ public:
 	void impacta(double width, double height);
 	void step();
 	MODO modo;
+
+	int id;
 	bool seleccionado;
 	int WIDTH, HEIGHT;
 };

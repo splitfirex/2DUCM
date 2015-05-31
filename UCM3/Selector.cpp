@@ -17,6 +17,16 @@ Selector::Selector(void)
 	seleccionado = false;
 }
 
+Selector::Selector(int ids, int width, double height){
+	modo = design;
+	id = ids;
+	numVertices =0;
+	seleccionado = false;
+	WIDTH = width;
+	HEIGHT = height;
+}
+
+
 void Selector:: setVertices(int nv, Vector2** ve) {
 	Objeto2D::setVertices(nv,ve);
 	numVertices = nv;

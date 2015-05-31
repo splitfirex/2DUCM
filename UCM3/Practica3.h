@@ -13,5 +13,8 @@ public:
 
 	Practica3(void);
 	~Practica3(void);
+
+private: 
+	void generarSelectoresAleatorios(int col, int fil, int cant);
 };
 

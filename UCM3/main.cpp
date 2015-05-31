@@ -3,6 +3,7 @@
 #include <GL/freeglut.h>
 #include <Windows.h>
 #include "Practica3.h"
+#include <time.h>
 
 void Display();
 void reshape(int w, int h);
@@ -17,7 +18,7 @@ Escena *actual;
 int main(int argc, char *argv[]){
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE );
-	
+
 	glutInitWindowSize(800,600);
 	glutInit(&argc,argv);
 	glutCreateWindow("Graficas Practica 3");
@@ -27,6 +28,11 @@ int main(int argc, char *argv[]){
 	glutKeyboardFunc(keyFunc);
 	glutSpecialFunc(keySp);
 	glutMouseFunc(mouse);
+
+	time_t seconds;	
+	time(&seconds);
+
+	srand((unsigned int) seconds);
 
 	actual = new Practica3();
 	initGL();
@@ -68,13 +74,13 @@ void initGL(){
 	glLineWidth(2.0);
 
 	// Viewport
-    glViewport(0, 0, actual->WIDTH, actual->HEIGHT);
-    
-	// Model transformation
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+	glViewport(0, 0, actual->WIDTH, actual->HEIGHT);
 
-    // Scene Visible Area
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+	// Model transformation
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	// Scene Visible Area
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 }

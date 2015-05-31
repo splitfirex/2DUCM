@@ -1,6 +1,6 @@
 #include "Selector.h"
 #include "stdlib.h"
-#include <time.h>
+
 
 
 double fRand(double fMin, double fMax)
@@ -37,10 +37,7 @@ void Selector:: setVertices(int nv, Vector2** ve) {
 		}
 
 		calcularBaricentro();
-		time_t seconds;	
-		time(&seconds);
 
-		srand((unsigned int) seconds);
 		double dd = rand() % 1;
 		aceleracion = new Vector2(fRand(-1,1),fRand(-1,1));
 		aceleracion->normalizar();
@@ -195,4 +192,18 @@ void Selector::dibuja(){
 
 
 
+}
+
+
+Selector* Selector::generarEnRango(int x, int y, int w, int h,int width, double height){
+	Selector *result = new Selector(0, width,height);
+	Vector2 **listaVertices =  new Vector2*[3];
+	 
+	for(int i=0; i< 3 ; i++){
+		int nx = rand()%(w-x)+x;
+		int ny =rand()%(h-y)+y;
+		listaVertices[i] = new Vector2(nx,ny);
+	}
+	result->setVertices(3,listaVertices);
+	return result;
 }

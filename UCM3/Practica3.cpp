@@ -23,6 +23,8 @@ std::vector<Selector*> selectores;
 
 MODO modoActual;
 bool running;
+bool muestraArbol;
+bool modoQuadtree;
 int numVertices;
 QuadTree* arbol;
 int cuentaSelectores;
@@ -58,10 +60,11 @@ Practica3::Practica3(void)
 	//selectorConstruccion->modo = design;
 	//selectorConstruccion->WIDTH =WIDTH;
 	//selectorConstruccion->HEIGHT = HEIGHT;
-
+	generarSelectoresAleatorios(4, 4, 10000);
+	muestraArbol =true;
 	//selectorConstruccion->calcularBaricentro();
 
-	selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
+	//selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
 	//selectores[selectores.size()-1]->WIDTH =WIDTH;
 	//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 
@@ -92,7 +95,7 @@ void Practica3::dibujar(){
 	for (auto &selec : selectores){
 		selec->dibuja();   
 	}
-	if(arbol){
+	if(arbol && muestraArbol){
 		arbol->dibuja();
 	}
 }
@@ -213,8 +216,12 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		running = running ? false : true;
 		timer(1);
 		break;
-
-
+	case 'm':
+		muestraArbol = muestraArbol ? false : true;
+		break;
+	case 't':
+		modoQuadtree = modoQuadtree ? false : true;
+		break;
 	default:
 		need_redisplay = false;
 		break;
@@ -273,16 +280,37 @@ void Practica3::mouse(int button, int state, int x, int y){
 	}else if(modoActual == select){
 		if ((button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN)){
 			puntoClick = new Vector2(x,HEIGHT-y);
-
-			for (auto &selec : selectores) 
-			{  
-				if(selec->estaDentro(puntoClick)){
-					selec->seleccionado = true;
-				}else{
-					selec->seleccionado = false;
+			if(!modoQuadtree){
+				for (auto &selec : selectores) 
+				{  
+					if(selec->estaDentro(puntoClick)){
+						selec->seleccionado = true;
+					}else{
+						selec->seleccionado = false;
+					}
 				}
+			}else{
+				arbol->buscar(puntoClick);
+
 			}
 		}
 	}
 
+}
+
+void Practica3::generarSelectoresAleatorios(int col, int fil, int cant){
+	int wPorCol = WIDTH/col;
+	int hPorFil = HEIGHT/fil;
+
+	Selector *temp = new Selector();
+	for(int i = 0 ; i < col ; i++){
+		for(int j = 0 ; j < col ; j++){
+			int w = i*wPorCol;
+			int h = j*hPorFil;
+			for(int k = 0; k < cant ; k++){
+				selectores.push_back(temp->generarEnRango(w,h,w+wPorCol,h+hPorFil,WIDTH,HEIGHT));
+			}
+		}
+	}
+	numVertices =3;
 }

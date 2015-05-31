@@ -14,6 +14,8 @@ public:
 	void moverse();
 	bool estaDentro(Vector2* punto);
 	void calcularBaricentro();
+	Selector* generarEnRango(int x, int y, int w, int h,int width, double height);
+
 
 	void setTextura(int nv, Vector2** ve);
 	Vector2 ** textura;

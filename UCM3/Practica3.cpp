@@ -60,11 +60,11 @@ Practica3::Practica3(void)
 	//selectorConstruccion->modo = design;
 	//selectorConstruccion->WIDTH =WIDTH;
 	//selectorConstruccion->HEIGHT = HEIGHT;
-	generarSelectoresAleatorios(4, 4, 200);
+	//generarSelectoresAleatorios(4, 4, 2);
 	muestraArbol =true;
 	//selectorConstruccion->calcularBaricentro();
 
-	//selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
+	selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
 	//selectores[selectores.size()-1]->WIDTH =WIDTH;
 	//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 
@@ -174,7 +174,7 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		running = false;
 		break ;
 	case 's' :
-		arbol = new QuadTree(0,0,WIDTH,HEIGHT);
+		arbol = new QuadTree(0,0,WIDTH,HEIGHT,selectores);
 		modoActual = select;
 		setModoSelectores();
 		if(numVertices <3){
@@ -185,11 +185,11 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 			numVertices =3;
 		}
 		// Guardamos la lista en el arbol.
-		for(std::vector<Selector*>::iterator it = selectores.begin(); it != selectores.end(); ++it) {
-			if((*it)->vertices){
-				arbol->inserta((*it));
-			}
-		}
+		//for(std::vector<Selector*>::iterator it = selectores.begin(); it != selectores.end(); ++it) {
+		//	if((*it)->vertices){
+		//		arbol->inserta((*it));
+		//	}
+	//	}
 
 		running = false;
 		break ;

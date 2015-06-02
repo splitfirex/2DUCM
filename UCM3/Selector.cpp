@@ -44,6 +44,40 @@ void Selector:: setVertices(int nv, Vector2** ve) {
 	}
 }
 
+bool Selector:: intercepta(Vector2* p0, Vector2* p1){
+	Vector2* recta = (*p1)-(*p0);
+	double  tE = 0;
+	double  tL = 1;
+
+	for(int i=0; i< numVertices ; i++){
+		Vector2* lado = (*vertices[i])-(*vertices[(i+1) % numVertices]);
+		Vector2* nizquierda = lado->normalIzquierda();
+		double n = - ((*p0)-(*vertices[i]))->dot(nizquierda);
+		double d = recta->dot(nizquierda);
+		if(d == 0){
+			if(n<0){
+				return false;
+			}else{
+				continue;
+			}
+		}
+
+		double t = n/d;
+		if(d<0){
+			if(t > tE){
+				tE = t;
+				if(tE > 1) return false;
+			}
+		}else{
+			if( t < 1){
+				tL = t;
+				if(tL < tE) return false;
+			}
+		}
+	}
+	return true;
+}
+
 void Selector::impacta(double width, double height){
 	Vector2 *normal = new Vector2(0,0);
 	bool impacto = false;
@@ -198,7 +232,7 @@ void Selector::dibuja(){
 Selector* Selector::generarEnRango(int x, int y, int w, int h,int width, double height){
 	Selector *result = new Selector(0, width,height);
 	Vector2 **listaVertices =  new Vector2*[3];
-	 
+
 	for(int i=0; i< 3 ; i++){
 		int nx = rand()%(w-x)+x;
 		int ny =rand()%(h-y)+y;

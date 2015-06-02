@@ -22,6 +22,7 @@ public:
 	Vector2 * aceleracion;
 	Vector2 * baricentro;
 	void setVertices(int nv, Vector2** ve);
+	bool intercepta(Vector2* p1, Vector2* p2);
 
 	void impacta(double width, double height);
 	void step();

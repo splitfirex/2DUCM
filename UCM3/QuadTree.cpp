@@ -5,15 +5,68 @@
 bool QuadNodo::contiene(Vector2* v){ 
 	if(rec->x <= v->getX() && rec->w >= v->getX()
 		&& rec->y <= v->getY() && rec->h >= v->getY()){
-		return true;
+			return true;
 	}
 	return false;
 };
 
+
+
+QuadNodo* QuadTree::topDownConstructor(std::vector<Selector*>* lista, int x, int y, int w, int h){
+
+	if(lista->size() == 1){
+		QuadNodo* nodo = new QuadLeaf(x, y, w, h);
+		nodo->inserta(lista->at(0));
+		return nodo;
+	}else if(lista->size() == 0){
+		QuadNodo* nodo = new QuadLeaf(x, y, w, h);
+		return nodo;
+	}
+	else{
+		int wT = (w - x);
+		int hT = (h - y);
+		std::vector<Selector*>* nwList = new std::vector<Selector*>();
+		std::vector<Selector*>* neList = new std::vector<Selector*>();
+		std::vector<Selector*>* seList = new std::vector<Selector*>();
+		std::vector<Selector*>* swList = new std::vector<Selector*>();
+
+		for(std::vector<Selector*>::iterator it = lista->begin(); it != lista->end(); ++it) {
+			if(!(*it)->vertices || (*it)->numVertices !=3){ continue; } 
+			QuadTreeRec* recNW  = new QuadTreeRec(x, (y + hT/2)+1, x + wT/2, h);
+			QuadTreeRec* recNE  = new QuadTreeRec((x + wT/2)+1, y + hT/2,w, h);
+			QuadTreeRec* recSE  = new QuadTreeRec(x + wT/2, y, w, (y + hT/2) -1);
+			QuadTreeRec* recSW  = new QuadTreeRec(x, y ,(x+ wT/2)-1, y +hT/2);
+			if(recNW->intercepta(*it)) nwList->push_back(*it);
+			if(recNE->intercepta(*it)) neList->push_back(*it);
+			if(recSW->intercepta(*it)) swList->push_back(*it);
+			if(recSE->intercepta(*it)) seList->push_back(*it);
+		}
+
+		QuadNodo* nwQuadNode= topDownConstructor(nwList,x, (y + hT/2)+1, x + wT/2, h);
+		QuadNodo* neQuadNode= topDownConstructor(neList,(x + wT/2)+1, y + hT/2,w, h);
+		QuadNodo* seQuadNode= topDownConstructor(seList,x + wT/2, y, w, (y + hT/2) -1);
+		QuadNodo* swQuadNode= topDownConstructor(swList,x, y ,(x+ wT/2)-1, y +hT/2);
+
+		QuadBranch* qb= new QuadBranch(x, y, w, h);
+		qb->nodos[NW] = nwQuadNode;
+		qb->nodos[NE] = neQuadNode;
+		qb->nodos[SE] = seQuadNode;
+		qb->nodos[SW] = swQuadNode;
+
+		return qb;
+	}
+
+}
+
 // Metodos del arbol principal
 
-QuadTree::QuadTree(int mix, int miy, int max, int may){
-	raiz = new QuadLeaf(mix, miy,max, may);
+QuadTree::QuadTree(int mix, int miy, int max, int may, std::vector<Selector*> lista){
+	//std::vector<Selector*>* listaNueva = new std::vector<Selector*>();
+	//for(std::vector<Selector*>::iterator it = lista.begin(); it != lista.end(); ++it) {
+	//	listaNueva->push_back(*(it));
+//	}
+
+	raiz = topDownConstructor(&lista,mix,miy,max,may);//new QuadLeaf(mix, miy,max, may);
 	minX = mix, minY = miy, maxX= max, maxY = may;
 }
 
@@ -37,23 +90,23 @@ QuadLeaf::QuadLeaf(int mix, int miy, int max, int may) : QuadNodo(mix, miy,max, 
 }
 
 void QuadLeaf::dibuja(){
-		glPushMatrix();
-		double r = ((double) rand() / (RAND_MAX));
-		double g = ((double) rand() / (RAND_MAX));
-		double b = ((double) rand() / (RAND_MAX));
+	glPushMatrix();
+	double r = ((double) rand() / (RAND_MAX));
+	double g = ((double) rand() / (RAND_MAX));
+	double b = ((double) rand() / (RAND_MAX));
 
-		glColor3f(r,g,b);
-		glDisable(GL_TEXTURE_2D);
-		glLineWidth(1.0);
-		glBegin(GL_LINE_LOOP);
-		
-		glVertex2d(rec->x,rec->y);
-		glVertex2d(rec->w,rec->y);
-		glVertex2d(rec->w,rec->h);
-		glVertex2d(rec->x,rec->h);
+	glColor3f(r,g,b);
+	glDisable(GL_TEXTURE_2D);
+	glLineWidth(1.0);
+	glBegin(GL_LINE_LOOP);
 
-		glEnd();
-		glPopMatrix();
+	glVertex2d(rec->x,rec->y);
+	glVertex2d(rec->w,rec->y);
+	glVertex2d(rec->w,rec->h);
+	glVertex2d(rec->x,rec->h);
+
+	glEnd();
+	glPopMatrix();
 }
 
 QuadNodo* QuadLeaf::inserta(Selector* p){
@@ -95,13 +148,22 @@ QuadBranch::QuadBranch(int mix, int miy, int max, int may) : QuadNodo(mix, miy, 
 
 QuadNodo* QuadBranch::inserta(Selector* p){
 	for(int i =0 ; i < 4 ; i++){
-		for(int h = 0 ; h < p->numVertices ; h++){
-			if(nodos[i]->contiene(p->vertices[h])){
+		if(nodos[i]->rec->intercepta(p)
+			|| p->intercepta(new Vector2(nodos[i]->rec->x,nodos[i]->rec->y), new Vector2(nodos[i]->rec->w,nodos[i]->rec->y))
+			|| p->intercepta(new Vector2(nodos[i]->rec->w,nodos[i]->rec->y), new Vector2(nodos[i]->rec->w,nodos[i]->rec->h))
+			|| p->intercepta(new Vector2(nodos[i]->rec->w,nodos[i]->rec->h), new Vector2(nodos[i]->rec->x,nodos[i]->rec->h))
+			|| p->intercepta(new Vector2(nodos[i]->rec->x,nodos[i]->rec->h), new Vector2(nodos[i]->rec->x,nodos[i]->rec->y))
+			){
 				QuadNodo* n = nodos[i]->inserta(p);
 				nodos[i] = n;
-				break;
-			} 
 		}
+		//for(int h = 0 ; h < p->numVertices ; h++){
+		//	if(nodos[i]->contiene(p->vertices[h]) || ){
+		//		QuadNodo* n = nodos[i]->inserta(p);
+		//		nodos[i] = n;
+		//		break;
+		//	} 
+		//}
 	}
 	return this;
 }

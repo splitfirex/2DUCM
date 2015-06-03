@@ -34,6 +34,7 @@ void Selector:: setVertices(int nv, Vector2** ve) {
 		textura = new Vector2*[nv];
 		for(int i =0 ; i < nv; i++){
 			textura[i] = vertices[i]->clonar();
+			normales[i] = ((*vertices[i])-(*vertices[(i+1) % numVertices]))->normalIzquierda();
 		}
 
 		calcularBaricentro();
@@ -44,38 +45,43 @@ void Selector:: setVertices(int nv, Vector2** ve) {
 	}
 }
 
-bool Selector:: intercepta(Vector2* p0, Vector2* p1){
-	Vector2* recta = (*p1)-(*p0);
-	double  tE = 0;
-	double  tL = 1;
+Vector2* Selector::proyeccion(Vector2* p){
 
-	for(int i=0; i< numVertices ; i++){
-		Vector2* lado = (*vertices[i])-(*vertices[(i+1) % numVertices]);
-		Vector2* nizquierda = lado->normalIzquierda();
-		double n = - ((*p0)-(*vertices[i]))->dot(nizquierda);
-		double d = recta->dot(nizquierda);
-		if(d == 0){
-			if(n<0){
-				return false;
-			}else{
-				continue;
-			}
-		}
+	 // To project a point on an axis use the dot product
+	double dotProduct = p->dot(this->vertices[0]);
+    double min = dotProduct;
+    double max = dotProduct;
+	for (int i = 0; i < this->numVertices; i++) {
+		dotProduct = this->vertices[i]->dot(p);
+        if (dotProduct < min) {
+            min = dotProduct;
+        } else {
+            if (dotProduct> max) {
+                max = dotProduct;
+            }
+        }
+    }
 
-		double t = n/d;
-		if(d<0){
-			if(t > tE){
-				tE = t;
-				if(tE > 1) return false;
-			}
-		}else{
-			if( t < 1){
-				tL = t;
-				if(tL < tE) return false;
-			}
-		}
-	}
-	return true;
+	Vector2* proj = new Vector2(min,max);
+	return proj;
+
+	//Vector2* pNormalizado = p->clonar();
+	//pNormalizado->normalizar();
+
+	//double min = pNormalizado->dot(normales[0]);
+	//double max = min;
+	//// looping through the vertices and doing the dot product
+	//for (int i = 1; i < numVertices; i++)
+	//{
+	//	double p = pNormalizado->dot(vertices[i]);
+	//	if (p < min)
+	//		min = p;
+	//	else if (p > max)
+	//		max = p;
+	//}
+	//// creating the vector that will be then returned
+	//Vector2* proj = new Vector2(min,max);
+	//return proj;
 }
 
 void Selector::impacta(double width, double height){

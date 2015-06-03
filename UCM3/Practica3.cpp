@@ -60,11 +60,11 @@ Practica3::Practica3(void)
 	//selectorConstruccion->modo = design;
 	//selectorConstruccion->WIDTH =WIDTH;
 	//selectorConstruccion->HEIGHT = HEIGHT;
-	//generarSelectoresAleatorios(4, 4, 3);
+	generarSelectoresAleatorios(4, 4, 30);
 	muestraArbol =true;
 	//selectorConstruccion->calcularBaricentro();
 
-	selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
+	//selectores.push_back(new Selector(cuentaSelectores++,WIDTH,HEIGHT));
 	//selectores[selectores.size()-1]->WIDTH =WIDTH;
 	//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 

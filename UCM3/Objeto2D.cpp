@@ -31,7 +31,34 @@ void Objeto2D:: rota(GLfloat alfa) {
 void Objeto2D:: setVertices(int nv, Vector2** ve) {
 	numVertices = nv;
 	vertices = new Vector2*[nv];
+	normales = new Vector2*[nv];
 	for(int i=0; i< nv; i++){
 		vertices[i] = ve[i]->clonar();
 	}
+
+	if(sentidoHorario()){
+		invertirVerticesOrden();
+	}
+}
+
+bool Objeto2D::sentidoHorario(){
+	int valor =0;
+	for(int i =0 ; i < numVertices ; i++){
+		Vector2* v1 = vertices[i];
+		Vector2* v2 = vertices[(i + 1) % numVertices];
+
+		valor = valor + (v2->x-v1->x)*(v1->y+v2->y);
+	}
+	return valor >= 0;
+}
+
+void Objeto2D::invertirVerticesOrden(){
+	Vector2** vtemporal = new Vector2*[numVertices];
+	for(int i =0 ; i < numVertices ; i++){
+		vtemporal[numVertices - (i+1)] = vertices[i];
+	}
+	for(int i =0 ; i < numVertices ; i++){
+		vertices[i] = vtemporal[i];
+	}
+
 }

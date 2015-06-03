@@ -15,6 +15,9 @@ class Objeto2D : public virtual ObjetoDibujable{
 		void setVertices(int numVertices, Vector2**);
 		int numVertices, numNormales;
 		Vector2** vertices;
+		Vector2** normales;
+		bool sentidoHorario();
+		void invertirVerticesOrden();
 };
 
 #endif

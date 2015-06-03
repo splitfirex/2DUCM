@@ -156,10 +156,10 @@ QuadBranch::QuadBranch(int mix, int miy, int max, int may) : QuadNodo(mix, miy, 
 QuadNodo* QuadBranch::inserta(Selector* p){
 	for(int i =0 ; i < 4 ; i++){
 		if(nodos[i]->rec->intercepta(p)
-			|| p->intercepta(new Vector2(nodos[i]->rec->x,nodos[i]->rec->y), new Vector2(nodos[i]->rec->w,nodos[i]->rec->y))
-			|| p->intercepta(new Vector2(nodos[i]->rec->w,nodos[i]->rec->y), new Vector2(nodos[i]->rec->w,nodos[i]->rec->h))
-			|| p->intercepta(new Vector2(nodos[i]->rec->w,nodos[i]->rec->h), new Vector2(nodos[i]->rec->x,nodos[i]->rec->h))
-			|| p->intercepta(new Vector2(nodos[i]->rec->x,nodos[i]->rec->h), new Vector2(nodos[i]->rec->x,nodos[i]->rec->y))
+			//|| p->intercepta(new Vector2(nodos[i]->rec->x,nodos[i]->rec->y), new Vector2(nodos[i]->rec->w,nodos[i]->rec->y))
+		//	|| p->intercepta(new Vector2(nodos[i]->rec->w,nodos[i]->rec->y), new Vector2(nodos[i]->rec->w,nodos[i]->rec->h))
+		//	|| p->intercepta(new Vector2(nodos[i]->rec->w,nodos[i]->rec->h), new Vector2(nodos[i]->rec->x,nodos[i]->rec->h))
+	//		|| p->intercepta(new Vector2(nodos[i]->rec->x,nodos[i]->rec->h), new Vector2(nodos[i]->rec->x,nodos[i]->rec->y))
 			){
 				QuadNodo* n = nodos[i]->inserta(p);
 				nodos[i] = n;

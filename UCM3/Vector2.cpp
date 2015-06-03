@@ -17,8 +17,8 @@ Vector2* operator+(Vector2 v1, Vector2 v2){
 Vector2* Vector2::normalIzquierda(){
 	Vector2 *result = new Vector2(-y,x);
 
-	//result->normalizar();
-	int ee = dot(result);
+	result->normalizar();
+	
 	return result;
 }
 

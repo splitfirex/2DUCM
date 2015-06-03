@@ -60,7 +60,7 @@ Practica3::Practica3(void)
 	//selectorConstruccion->modo = design;
 	//selectorConstruccion->WIDTH =WIDTH;
 	//selectorConstruccion->HEIGHT = HEIGHT;
-	//generarSelectoresAleatorios(4, 4, 2);
+	//generarSelectoresAleatorios(4, 4, 3);
 	muestraArbol =true;
 	//selectorConstruccion->calcularBaricentro();
 
@@ -174,7 +174,7 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		running = false;
 		break ;
 	case 's' :
-		arbol = new QuadTree(0,0,WIDTH,HEIGHT,selectores);
+		
 		modoActual = select;
 		setModoSelectores();
 		if(numVertices <3){
@@ -184,6 +184,7 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 			//selectores[selectores.size()-1]->HEIGHT =HEIGHT;
 			numVertices =3;
 		}
+		arbol = new QuadTree(0,0,WIDTH,HEIGHT,selectores);
 		// Guardamos la lista en el arbol.
 		//for(std::vector<Selector*>::iterator it = selectores.begin(); it != selectores.end(); ++it) {
 		//	if((*it)->vertices){
@@ -221,6 +222,7 @@ void Practica3::keyboard(unsigned char key, int mX, int mY){
 		break;
 	case 't':
 		modoQuadtree = modoQuadtree ? false : true;
+		std::cout << "Modo quadtree :" << modoQuadtree;
 		break;
 	default:
 		need_redisplay = false;

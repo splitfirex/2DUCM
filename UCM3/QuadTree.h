@@ -12,7 +12,7 @@ public:
 	QuadTreeRec(int x1,int y1, int x2,int y2){ x = x1; y =y1; w = x2; h = y2; };
 	void dibuja();
 	bool intercepta(Selector* v){
-		// compruebo si algun vertice esta dentro del rango del nodo
+		// compruebo si algun vertice del triangulo se encuentra dentro del cuadrado
 		for(int i=0; i < 3 ; i++){
 			if(x <= v->vertices[i]->getX() && w >= v->vertices[i]->getX()
 				&& y <= v->vertices[i]->getY() && h >= v->vertices[i]->getY()){
@@ -20,8 +20,7 @@ public:
 			}
 		}
 
-		// compruebo intercepcion de los vertices con el triangulo
-
+		// compruebo intercepcion de los vertices del triangulo con el cuadrado
 		if( v->intercepta(new Vector2(x,y), new Vector2(w,y))
 			|| v->intercepta(new Vector2(w,y), new Vector2(w,h))
 			|| v->intercepta(new Vector2(w,h), new Vector2(x,h))
@@ -72,6 +71,7 @@ public:
 	QuadNodo* inserta(Selector* p);
 	std::vector<Selector*> buscar(Vector2* v);
 	void dibuja();
+	QuadNodo* inserta(std::vector<Selector*>* p);
 
 	QuadLeaf(void);
 	~QuadLeaf(void);
@@ -89,7 +89,7 @@ public:
 	std::vector<Selector*> buscar(Vector2* v);
 	~QuadTree(void);
 	void dibuja();
-	QuadNodo* topDownConstructor(std::vector<Selector*> *lista, int x, int y, int w, int h);
+	QuadNodo* topDownConstructor(std::vector<Selector*> *lista, int x, int y, int w, int h, int prof, int profmax);
 
 private:
 

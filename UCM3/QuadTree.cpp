@@ -12,14 +12,14 @@ bool QuadNodo::contiene(Vector2* v){
 
 
 
-QuadNodo* QuadTree::topDownConstructor(std::vector<Selector*>* lista, int x, int y, int w, int h){
+QuadNodo* QuadTree::topDownConstructor(std::vector<Selector*>* lista, int x, int y, int w, int h, int prof, int maxprof){
 
-	if(lista->size() == 1){
-		QuadNodo* nodo = new QuadLeaf(x, y, w, h);
-		nodo->inserta(lista->at(0));
+	if(lista->size() < 3 || prof == maxprof){
+		QuadLeaf* nodo = new QuadLeaf(x, y, w, h);
+		nodo->inserta(lista);
 		return nodo;
 	}else if(lista->size() == 0){
-		QuadNodo* nodo = new QuadLeaf(x, y, w, h);
+		QuadLeaf* nodo = new QuadLeaf(x, y, w, h);
 		return nodo;
 	}
 	else{
@@ -42,10 +42,10 @@ QuadNodo* QuadTree::topDownConstructor(std::vector<Selector*>* lista, int x, int
 			if(recSE->intercepta(*it)) seList->push_back(*it);
 		}
 
-		QuadNodo* nwQuadNode= topDownConstructor(nwList,x, (y + hT/2)+1, x + wT/2, h);
-		QuadNodo* neQuadNode= topDownConstructor(neList,(x + wT/2)+1, y + hT/2,w, h);
-		QuadNodo* seQuadNode= topDownConstructor(seList,x + wT/2, y, w, (y + hT/2) -1);
-		QuadNodo* swQuadNode= topDownConstructor(swList,x, y ,(x+ wT/2)-1, y +hT/2);
+		QuadNodo* nwQuadNode= topDownConstructor(nwList,x, (y + hT/2)+1, x + wT/2, h, prof+1, maxprof);
+		QuadNodo* neQuadNode= topDownConstructor(neList,(x + wT/2)+1, y + hT/2,w, h, prof +1, maxprof);
+		QuadNodo* seQuadNode= topDownConstructor(seList,x + wT/2, y, w, (y + hT/2) -1, prof +1, maxprof);
+		QuadNodo* swQuadNode= topDownConstructor(swList,x, y ,(x+ wT/2)-1, y +hT/2,  prof +1, maxprof);
 
 		QuadBranch* qb= new QuadBranch(x, y, w, h);
 		qb->nodos[NW] = nwQuadNode;
@@ -66,7 +66,7 @@ QuadTree::QuadTree(int mix, int miy, int max, int may, std::vector<Selector*> li
 	//	listaNueva->push_back(*(it));
 //	}
 
-	raiz = topDownConstructor(&lista,mix,miy,max,may);//new QuadLeaf(mix, miy,max, may);
+	raiz = topDownConstructor(&lista,mix,miy,max,may,0,7);//new QuadLeaf(mix, miy,max, may);
 	minX = mix, minY = miy, maxX= max, maxY = may;
 }
 
@@ -124,6 +124,13 @@ QuadNodo* QuadLeaf::inserta(Selector* p){
 
 }
 
+QuadNodo* QuadLeaf::inserta(std::vector<Selector*>* p){
+	cantidad = p->size();
+	Objetos = *p;
+	return this;
+}
+
+
 std::vector<Selector*> QuadLeaf::buscar(Vector2* p){
 	std::vector<Selector*> resultado;
 	int n =0;
@@ -157,13 +164,6 @@ QuadNodo* QuadBranch::inserta(Selector* p){
 				QuadNodo* n = nodos[i]->inserta(p);
 				nodos[i] = n;
 		}
-		//for(int h = 0 ; h < p->numVertices ; h++){
-		//	if(nodos[i]->contiene(p->vertices[h]) || ){
-		//		QuadNodo* n = nodos[i]->inserta(p);
-		//		nodos[i] = n;
-		//		break;
-		//	} 
-		//}
 	}
 	return this;
 }

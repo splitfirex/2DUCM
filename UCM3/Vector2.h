@@ -5,6 +5,7 @@ public:
    float x;
    float y;
    Vector2(float x1, float y1);
+   Vector2();
    ~Vector2();
    void trasladar(Vector2* traslacion); //modifica this
    void escalar(float factor); //modifica this

@@ -60,7 +60,7 @@ Practica3::Practica3(void)
 	//selectorConstruccion->modo = design;
 	//selectorConstruccion->WIDTH =WIDTH;
 	//selectorConstruccion->HEIGHT = HEIGHT;
-	generarSelectoresAleatorios(4, 4, 30);
+	generarSelectoresAleatorios(4, 4, 200);
 	muestraArbol =true;
 	//selectorConstruccion->calcularBaricentro();
 
@@ -103,11 +103,6 @@ void Practica3::dibujar(){
 
 void Practica3::reshape(int w, int h){
 
-	//GLdouble widthScale= WIDTH/(xRight-xLeft);
-	//GLdouble heightScale= HEIGHT/(yTop-yBot);
-
-	//Resize Scene Visible Area 
-	//Width and height scale remain
 	GLdouble newSVAWidth= w*(xRight-xLeft)/WIDTH; //= newWidth/widthScale
 	GLdouble newSVAHeight= h*(yTop-yBot)/HEIGHT; //= newHeight/heightScale
 

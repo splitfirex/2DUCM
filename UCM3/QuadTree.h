@@ -10,85 +10,11 @@
 class QuadTreeRec
 {
 public:
-	QuadTreeRec(int x1,int y1, int x2,int y2){ 
-		x = x1; y =y1; w = x2; h = y2;
-		numVertices =4;
-		vertices = new Vector2*[4];
-		normales = new Vector2*[4];
-		Vector2* v1 = new Vector2(x,y);
-		Vector2* v2 = new Vector2(x,h);
-		Vector2* v3 = new Vector2(w,h);
-		Vector2* v4 = new Vector2(w,y);
-		normales[0] = ((*v2)-(*v1))->normalIzquierda();
-		normales[1] = ((*v3)-(*v2))->normalIzquierda();
-		normales[2] = ((*v4)-(*v3))->normalIzquierda();
-		normales[3] = ((*v1)-(*v4))->normalIzquierda();
-		vertices[0] = v1;
-		vertices[1] = v2;
-		vertices[2] = v3;
-		vertices[3] = v4;
-	};
-	void dibuja();
-
-	Vector2* proyeccion(Vector2* p){
-
-		double dotProduct = p->dot(this->vertices[0]);
-		double min = dotProduct;
-		double max = dotProduct;
-		for (int i = 0; i < this->numVertices; i++) {
-			dotProduct = this->vertices[i]->dot(p);
-			if (dotProduct < min) {
-				min = dotProduct;
-			} else {
-				if (dotProduct> max) {
-					max = dotProduct;
-				}
-			}
-		}
-
-		Vector2* proj = new Vector2(min,max);
-		return proj;
-	}
-
-
-	bool intercepta(Selector* v){
-		// compruebo si algun vertice del triangulo se encuentra dentro del cuadrado
-		/*for(int i=0; i < 3 ; i++){
-		if(x <= v->vertices[i]->getX() && w >= v->vertices[i]->getX()
-		&& y <= v->vertices[i]->getY() && h >= v->vertices[i]->getY()){
-		return true;
-		}
-		}*/
-		//return false;
-
-		// comparo triangulo vs cuadrado
-		for (int i = 0; i < v->numVertices; i ++)
-		{
-			// projecting both shapes onto the axis
-			Vector2* Proj1 = v->proyeccion(v->normales[i]);
-			Vector2* Proj2 = this->proyeccion(v->normales[i]);
-			// if the overlap will be returned false otherwise continue the loop
-			//std::cout << Proj1->getX() << "|" << Proj1->getY() << " : " << Proj2->getX()  << "|" << Proj2->getY()  << '\n';
-			if (!Proj1->sobrePone(Proj2))
-				return false;
-		}
-
-		// comparo cuadrado vs triangulo
-		for (int i = 0; i < 4; i ++)
-		{
-			// projecting both shapes onto the axis
-			Vector2* Proj1 = v->proyeccion(this->normales[i]);
-			Vector2* Proj2 = this->proyeccion(this->normales[i]);
-			// if the overlap will be returned false otherwise continue the loop
-			//std::cout << Proj1->getX() << "|" << Proj1->getY() << " : " << Proj2->getX()  << "|" << Proj2->getY()  << '\n';
-			if (!Proj1->sobrePone(Proj2))
-				return false;
-		}
-		return true;
-	}
-	int numVertices;
-	Vector2 ** vertices;
-	Vector2 ** normales;
+	QuadTreeRec(int x1,int y1, int x2,int y2);
+	Vector2* proyeccion(Vector2* p);
+	bool intercepta(Selector* v);
+	Vector2** vertices;
+	Vector2 normales[4];
 	int x,y,w,h;
 };
 
@@ -150,7 +76,6 @@ public:
 	QuadNodo* topDownConstructor(std::vector<Selector*> *lista, int x, int y, int w, int h, int prof, int profmax);
 
 private:
-
 	QuadNodo *raiz;
 	int minX,minY,maxX,maxY;
 };
